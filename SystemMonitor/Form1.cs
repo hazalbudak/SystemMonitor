@@ -28,7 +28,8 @@ namespace SystemMonitor
             this.Controls.Add(progressBarCpu);
             this.Controls.Add(labelCpu);
             this.Controls.Add(chart1);
-            this.Controls.Add(comboBoxServices);
+            this.Controls.Add(dataGridViewServices);
+            //this.Controls.Add(comboBoxServices);
 
             chart1.Series.Clear();
             chart1.Series.Add("CPU");

@@ -28,57 +28,54 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelCpu = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.progressBarCpu = new System.Windows.Forms.ProgressBar();
+            this.progressBarFormCpu = new System.Windows.Forms.ProgressBar();
+            this.labelFormCpu = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // labelCpu
-            // 
-            this.labelCpu.AutoSize = true;
-            this.labelCpu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelCpu.Location = new System.Drawing.Point(448, 86);
-            this.labelCpu.Name = "labelCpu";
-            this.labelCpu.Size = new System.Drawing.Size(28, 16);
-            this.labelCpu.TabIndex = 11;
-            this.labelCpu.Text = "%0";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(25, 86);
+            this.label1.Location = new System.Drawing.Point(33, 86);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 16);
-            this.label1.TabIndex = 10;
+            this.label1.TabIndex = 0;
             this.label1.Text = "CPU:";
             // 
-            // progressBarCpu
+            // progressBarFormCpu
             // 
-            this.progressBarCpu.Location = new System.Drawing.Point(86, 79);
-            this.progressBarCpu.Name = "progressBarCpu";
-            this.progressBarCpu.Size = new System.Drawing.Size(334, 23);
-            this.progressBarCpu.TabIndex = 9;
+            this.progressBarFormCpu.Location = new System.Drawing.Point(91, 76);
+            this.progressBarFormCpu.Name = "progressBarFormCpu";
+            this.progressBarFormCpu.Size = new System.Drawing.Size(227, 23);
+            this.progressBarFormCpu.TabIndex = 2;
+            // 
+            // labelFormCpu
+            // 
+            this.labelFormCpu.AutoSize = true;
+            this.labelFormCpu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelFormCpu.Location = new System.Drawing.Point(346, 83);
+            this.labelFormCpu.Name = "labelFormCpu";
+            this.labelFormCpu.Size = new System.Drawing.Size(28, 16);
+            this.labelFormCpu.TabIndex = 3;
+            this.labelFormCpu.Text = "%0";
             // 
             // FormCpu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(502, 195);
-            this.Controls.Add(this.labelCpu);
+            this.ClientSize = new System.Drawing.Size(424, 188);
+            this.Controls.Add(this.labelFormCpu);
+            this.Controls.Add(this.progressBarFormCpu);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBarCpu);
             this.Name = "FormCpu";
-            this.Text = "FormCpu";
+            this.Load += new System.EventHandler(this.FormCpu_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label labelCpu;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ProgressBar progressBarCpu;
+        private System.Windows.Forms.ProgressBar progressBarFormCpu;
+        private System.Windows.Forms.Label labelFormCpu;
     }
 }

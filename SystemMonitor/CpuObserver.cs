@@ -19,7 +19,8 @@ namespace SystemMonitor
         private ServiceController[] _services;
         private Dictionary<int, PerformanceCounter> _processCounters = new Dictionary<int, PerformanceCounter>();
         private PerformanceCounter _totalCpuCounter;
-
+        // FormCpu'yu sınıf seviyesinde tanımla
+        private FormCpu _formCpu;
         public CpuObserver(ProgressBar progressBar, DataGridView dataGridViewServices, Label labelCpu, Chart chartCpu)
         {
             _progressBar = progressBar;
@@ -38,6 +39,10 @@ namespace SystemMonitor
             _updateCpuTimer.Start();
 
             _dataGridViewServices.SelectionChanged += OnServiceSelected;
+
+            // FormCpu'yu oluştur ve göster
+            _formCpu = new FormCpu();
+            _formCpu.Show();
         }
 
         private void InitializeDataGridView()
@@ -194,5 +199,6 @@ namespace SystemMonitor
                 counter.Dispose();
             }
         }
+
     }
 }
