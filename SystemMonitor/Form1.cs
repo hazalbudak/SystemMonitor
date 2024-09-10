@@ -18,17 +18,11 @@ namespace SystemMonitor
     public partial class Form1 : Form
     {
         private SystemMonitor _systemMonitor;
-        //private PerformanceCounter cpuCounter;
-
-        //private Timer updateCpuTimer;
-
-
 
         public Form1()
         {
             InitializeComponent();
             _systemMonitor = new SystemMonitor();
-
 
 
             this.Controls.Add(progressBarCpu);
@@ -40,7 +34,7 @@ namespace SystemMonitor
             chart1.Series.Add("CPU");
             chart1.Series["CPU"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
 
-            var cpuObserver = new CpuObserver(progressBarCpu, labelCpu, chart1);
+            var cpuObserver = new CpuObserver(progressBarCpu, dataGridViewServices, labelCpu, chart1);
             _systemMonitor.Attach(cpuObserver);
 
 

@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.progressBarCpu = new System.Windows.Forms.ProgressBar();
             this.progressBarRam = new System.Windows.Forms.ProgressBar();
             this.progressBarDisk = new System.Windows.Forms.ProgressBar();
@@ -47,20 +47,21 @@
             this.labelDisk = new System.Windows.Forms.Label();
             this.labelNetwork = new System.Windows.Forms.Label();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.comboBoxServices = new System.Windows.Forms.ComboBox();
+            this.dataGridViewServices = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewServices)).BeginInit();
             this.SuspendLayout();
             // 
             // progressBarCpu
             // 
-            this.progressBarCpu.Location = new System.Drawing.Point(169, 46);
+            this.progressBarCpu.Location = new System.Drawing.Point(169, 72);
             this.progressBarCpu.Name = "progressBarCpu";
             this.progressBarCpu.Size = new System.Drawing.Size(334, 23);
             this.progressBarCpu.TabIndex = 0;
             // 
             // progressBarRam
             // 
-            this.progressBarRam.Location = new System.Drawing.Point(169, 161);
+            this.progressBarRam.Location = new System.Drawing.Point(169, 151);
             this.progressBarRam.Name = "progressBarRam";
             this.progressBarRam.Size = new System.Drawing.Size(334, 23);
             this.progressBarRam.TabIndex = 1;
@@ -83,7 +84,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(53, 56);
+            this.label1.Location = new System.Drawing.Point(53, 82);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 16);
             this.label1.TabIndex = 4;
@@ -93,7 +94,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(53, 171);
+            this.label2.Location = new System.Drawing.Point(53, 158);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 16);
             this.label2.TabIndex = 5;
@@ -123,7 +124,7 @@
             // 
             this.labelCpu.AutoSize = true;
             this.labelCpu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelCpu.Location = new System.Drawing.Point(572, 56);
+            this.labelCpu.Location = new System.Drawing.Point(572, 82);
             this.labelCpu.Name = "labelCpu";
             this.labelCpu.Size = new System.Drawing.Size(28, 16);
             this.labelCpu.TabIndex = 8;
@@ -133,7 +134,7 @@
             // 
             this.labelRam.AutoSize = true;
             this.labelRam.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelRam.Location = new System.Drawing.Point(572, 171);
+            this.labelRam.Location = new System.Drawing.Point(572, 158);
             this.labelRam.Name = "labelRam";
             this.labelRam.Size = new System.Drawing.Size(28, 16);
             this.labelRam.TabIndex = 9;
@@ -161,50 +162,51 @@
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart1.Legends.Add(legend3);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(169, 379);
             this.chart1.Name = "chart1";
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series9.Legend = "Legend1";
-            series9.Name = "CPU";
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series10.Legend = "Legend1";
-            series10.Name = "RAM";
-            series11.ChartArea = "ChartArea1";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series11.Legend = "Legend1";
-            series11.Name = "Disk";
-            series12.ChartArea = "ChartArea1";
-            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series12.Legend = "Legend1";
-            series12.Name = "Network";
-            this.chart1.Series.Add(series9);
-            this.chart1.Series.Add(series10);
-            this.chart1.Series.Add(series11);
-            this.chart1.Series.Add(series12);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Legend = "Legend1";
+            series5.Name = "CPU";
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series6.Legend = "Legend1";
+            series6.Name = "RAM";
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Legend = "Legend1";
+            series7.Name = "Disk";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Legend = "Legend1";
+            series8.Name = "Network";
+            this.chart1.Series.Add(series5);
+            this.chart1.Series.Add(series6);
+            this.chart1.Series.Add(series7);
+            this.chart1.Series.Add(series8);
             this.chart1.Size = new System.Drawing.Size(334, 253);
             this.chart1.TabIndex = 12;
             this.chart1.Text = "chart1";
             // 
-            // comboBoxServices
+            // dataGridViewServices
             // 
-            this.comboBoxServices.FormattingEnabled = true;
-            this.comboBoxServices.Location = new System.Drawing.Point(169, 87);
-            this.comboBoxServices.Name = "comboBoxServices";
-            this.comboBoxServices.Size = new System.Drawing.Size(334, 21);
-            this.comboBoxServices.TabIndex = 13;
+            this.dataGridViewServices.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dataGridViewServices.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewServices.Location = new System.Drawing.Point(685, 46);
+            this.dataGridViewServices.Name = "dataGridViewServices";
+            this.dataGridViewServices.Size = new System.Drawing.Size(405, 299);
+            this.dataGridViewServices.TabIndex = 14;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(821, 665);
-            this.Controls.Add(this.comboBoxServices);
+            this.ClientSize = new System.Drawing.Size(1150, 665);
+            this.Controls.Add(this.dataGridViewServices);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.labelNetwork);
             this.Controls.Add(this.labelDisk);
@@ -221,6 +223,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewServices)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,7 +244,7 @@
         private System.Windows.Forms.Label labelDisk;
         private System.Windows.Forms.Label labelNetwork;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.ComboBox comboBoxServices;
+        private System.Windows.Forms.DataGridView dataGridViewServices;
     }
 }
 

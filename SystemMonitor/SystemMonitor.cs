@@ -41,21 +41,6 @@ namespace SystemMonitor
 
         //    Notify();
         //}
-
-        //private float GetCPUUsage()
-        //{
-        //    return 50.0f; // Örnek değer
-        //}
-
-        //private float GetRAMUsage()
-        //{
-        //    return 30.0f; // Örnek değer
-        //}
-
-        //private float GetNetworkUsage()
-        //{
-        //    return 70.0f; // Örnek değer
-        //}
     }
 
 }
