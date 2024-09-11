@@ -19,8 +19,8 @@ namespace SystemMonitor
         private ServiceController[] _services;
         private Dictionary<int, PerformanceCounter> _processCounters = new Dictionary<int, PerformanceCounter>();
         private PerformanceCounter _totalCpuCounter;
-        // FormCpu'yu sınıf seviyesinde tanımla
         private FormCpu _formCpu;
+
         public CpuObserver(ProgressBar progressBar, DataGridView dataGridViewServices, Label labelCpu, Chart chartCpu)
         {
             _progressBar = progressBar;
@@ -38,11 +38,10 @@ namespace SystemMonitor
             _updateCpuTimer.Tick += UpdateCpuUsage;
             _updateCpuTimer.Start();
 
-            _dataGridViewServices.SelectionChanged += OnServiceSelected;
+            _dataGridViewServices.CellClick += OnServiceClicked;
 
-            // FormCpu'yu oluştur ve göster
+            // Initialize FormCpu but don't show it yet 
             _formCpu = new FormCpu();
-            _formCpu.Show();
         }
 
         private void InitializeDataGridView()
@@ -70,10 +69,17 @@ namespace SystemMonitor
             }
         }
 
-        private void OnServiceSelected(object sender, EventArgs e)
+        private void OnServiceClicked(object sender, DataGridViewCellEventArgs e)
         {
-            _chartCpu.Series["CPU"].Points.Clear();
-            UpdateCpuUsage(sender, e);
+            if (e.RowIndex >= 0)
+            {
+                var selectedServiceName = _dataGridViewServices.Rows[e.RowIndex].Cells["ServiceName"].Value.ToString();
+                if (selectedServiceName != "Total CPU Usage")
+                {
+                    _formCpu.Show();
+                    _formCpu.BringToFront();
+                }
+            }
         }
 
         private void UpdateCpuUsage(object sender, EventArgs e)
@@ -133,7 +139,7 @@ namespace SystemMonitor
         private void UpdateUI(float cpuUsage)
         {
             _progressBar.Value = (int)Math.Min(cpuUsage, 100);
-            _labelCpu.Text = $"%{cpuUsage:F1}";
+            _labelCpu.Text = $"{cpuUsage:F2}%";
 
             _chartCpu.Series["CPU"].Points.AddY(cpuUsage);
             if (_chartCpu.Series["CPU"].Points.Count > 60)
@@ -141,6 +147,9 @@ namespace SystemMonitor
                 _chartCpu.Series["CPU"].Points.RemoveAt(0);
             }
             _chartCpu.ResetAutoValues();
+
+            // Update FormCpu
+            _formCpu.UpdateCpuUsage(cpuUsage);
         }
 
         private int GetServiceProcessId(string serviceName)
@@ -198,7 +207,9 @@ namespace SystemMonitor
             {
                 counter.Dispose();
             }
+            _formCpu?.Dispose();
         }
-
     }
 }
+
+
