@@ -221,7 +221,7 @@
             this.Controls.Add(this.progressBarRam);
             this.Controls.Add(this.progressBarCpu);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Task Manager";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewServices)).EndInit();
             this.ResumeLayout(false);

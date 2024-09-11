@@ -5,7 +5,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Management;
 using System.ServiceProcess;
 using System.Linq;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 
 namespace SystemMonitor
 {
@@ -20,6 +20,9 @@ namespace SystemMonitor
         private Dictionary<int, PerformanceCounter> _processCounters = new Dictionary<int, PerformanceCounter>();
         private PerformanceCounter _totalCpuCounter;
         private FormCpu _formCpu;
+
+        private const int MAX_OPEN_FORMS = 4;
+        private Dictionary<string, FormCpu> _openForms = new Dictionary<string, FormCpu>();
 
         public CpuObserver(ProgressBar progressBar, DataGridView dataGridViewServices, Label labelCpu, Chart chartCpu)
         {
@@ -41,7 +44,7 @@ namespace SystemMonitor
             _dataGridViewServices.CellClick += OnServiceClicked;
 
             // Initialize FormCpu but don't show it yet 
-            _formCpu = new FormCpu();
+            //_formCpu = new FormCpu();
         }
 
         private void InitializeDataGridView()
@@ -73,28 +76,39 @@ namespace SystemMonitor
         {
             if (e.RowIndex >= 0)
             {
-                var selectedServiceName = _dataGridViewServices.Rows[e.RowIndex].Cells["ServiceName"].Value.ToString();
+                string selectedServiceName = _dataGridViewServices.Rows[e.RowIndex].Cells["ServiceName"].Value.ToString();
                 if (selectedServiceName != "Total CPU Usage")
                 {
-                    _formCpu.Show();
-                    _formCpu.BringToFront();
+                    OpenServiceForm(selectedServiceName);
                 }
             }
+        }
+        private void OpenServiceForm(string serviceName)
+        {
+            if (_openForms.ContainsKey(serviceName))
+            {
+                _openForms[serviceName].BringToFront();
+                return;
+            }
+
+            if (_openForms.Count >= MAX_OPEN_FORMS)
+            {
+                MessageBox.Show($"Maksimum Sekme Sayısına Ulaşıldı ({MAX_OPEN_FORMS}). ", "Form Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            FormCpu newForm = new FormCpu(serviceName);
+            newForm.FormClosed += (s, args) => _openForms.Remove(serviceName);
+            _openForms.Add(serviceName, newForm);
+            newForm.Show();
         }
 
         private void UpdateCpuUsage(object sender, EventArgs e)
         {
-            if (_dataGridViewServices.SelectedRows.Count > 0)
+            UpdateTotalCpuUsage();
+            foreach (var kvp in _openForms)
             {
-                var selectedServiceName = _dataGridViewServices.SelectedRows[0].Cells["ServiceName"].Value.ToString();
-                if (selectedServiceName == "Total CPU Usage")
-                {
-                    UpdateTotalCpuUsage();
-                }
-                else
-                {
-                    UpdateServiceCpuUsage(selectedServiceName);
-                }
+                UpdateServiceCpuUsage(kvp.Key, kvp.Value);
             }
         }
 
@@ -103,7 +117,7 @@ namespace SystemMonitor
             try
             {
                 float cpuUsage = _totalCpuCounter.NextValue();
-                UpdateUI(cpuUsage);
+                UpdateMainUI(cpuUsage);
             }
             catch (Exception ex)
             {
@@ -111,9 +125,9 @@ namespace SystemMonitor
             }
         }
 
-        private void UpdateServiceCpuUsage(string selectedServiceName)
+        private void UpdateServiceCpuUsage(string serviceName, FormCpu form)
         {
-            var service = _services.FirstOrDefault(s => s.ServiceName == selectedServiceName);
+            var service = _services.FirstOrDefault(s => s.ServiceName == serviceName);
 
             if (service != null)
             {
@@ -125,7 +139,7 @@ namespace SystemMonitor
                         var processCpuUsage = GetCpuUsageForProcess(processId);
                         if (processCpuUsage >= 0)
                         {
-                            UpdateUI(processCpuUsage);
+                            form.UpdateCpuUsage(processCpuUsage);
                         }
                     }
                 }
@@ -136,7 +150,7 @@ namespace SystemMonitor
             }
         }
 
-        private void UpdateUI(float cpuUsage)
+        private void UpdateMainUI(float cpuUsage)
         {
             _progressBar.Value = (int)Math.Min(cpuUsage, 100);
             _labelCpu.Text = $"{cpuUsage:F2}%";
@@ -147,9 +161,6 @@ namespace SystemMonitor
                 _chartCpu.Series["CPU"].Points.RemoveAt(0);
             }
             _chartCpu.ResetAutoValues();
-
-            // Update FormCpu
-            _formCpu.UpdateCpuUsage(cpuUsage);
         }
 
         private int GetServiceProcessId(string serviceName)
@@ -164,6 +175,7 @@ namespace SystemMonitor
             }
             return -1;
         }
+
 
         private float GetCpuUsageForProcess(int processId)
         {
@@ -207,7 +219,10 @@ namespace SystemMonitor
             {
                 counter.Dispose();
             }
-            _formCpu?.Dispose();
+            foreach (var form in _openForms.Values)
+            {
+                form.Dispose();
+            }
         }
     }
 }

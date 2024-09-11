@@ -75,6 +75,7 @@
             this.chartFormCpu.Name = "chartFormCpu";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.Red;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartFormCpu.Series.Add(series1);
@@ -89,7 +90,6 @@
             this.Controls.Add(this.progressBarFormCpu);
             this.Controls.Add(this.label1);
             this.Name = "FormCpu";
-            this.Load += new System.EventHandler(this.FormCpu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chartFormCpu)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
