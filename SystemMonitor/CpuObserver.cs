@@ -88,19 +88,33 @@ namespace SystemMonitor
             if (_openForms.ContainsKey(serviceName))
             {
                 _openForms[serviceName].BringToFront();
+                _openForms[serviceName].UpdateLastAccessTime();
                 return;
             }
 
             if (_openForms.Count >= MAX_OPEN_FORMS)
             {
-                MessageBox.Show($"Maksimum Sekme Sayısına Ulaşıldı ({MAX_OPEN_FORMS}). ", "Form Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                var oldestForm = _openForms.Values.OrderBy(f => f.LastAccessTime).First();
+                string oldestServiceName = oldestForm.ServiceName;
+                oldestForm.Close();
+                _openForms.Remove(oldestForm.ServiceName);
             }
 
             FormCpu newForm = new FormCpu(serviceName);
-            newForm.FormClosed += (s, args) => _openForms.Remove(serviceName);
+            newForm.FormClosed += (s, args) =>
+            {
+                _openForms.Remove(serviceName);
+            };
+
             _openForms.Add(serviceName, newForm);
             newForm.Show();
+            newForm.UpdateLastAccessTime();
+
+        }
+
+        private void UpdateDataGridViewEnabled()
+        {
+            _dataGridViewServices.Enabled = _openForms.Count < MAX_OPEN_FORMS;
         }
 
         private void UpdateCpuUsage(object sender, EventArgs e)
@@ -111,6 +125,7 @@ namespace SystemMonitor
                 UpdateServiceCpuUsage(kvp.Key, kvp.Value);
             }
         }
+
 
         private void UpdateTotalCpuUsage()
         {
@@ -124,6 +139,7 @@ namespace SystemMonitor
                 Console.WriteLine($"Error updating total CPU usage: {ex.Message}");
             }
         }
+
 
         private void UpdateServiceCpuUsage(string serviceName, FormCpu form)
         {
@@ -150,6 +166,7 @@ namespace SystemMonitor
             }
         }
 
+
         private void UpdateMainUI(float cpuUsage)
         {
             _progressBar.Value = (int)Math.Min(cpuUsage, 100);
@@ -162,6 +179,7 @@ namespace SystemMonitor
             }
             _chartCpu.ResetAutoValues();
         }
+
 
         private int GetServiceProcessId(string serviceName)
         {
@@ -226,5 +244,3 @@ namespace SystemMonitor
         }
     }
 }
-
-

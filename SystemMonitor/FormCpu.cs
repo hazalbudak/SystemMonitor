@@ -10,6 +10,10 @@ namespace SystemMonitor
         public ProgressBar ProgressBarFormCpu { get; private set; }
         public Label LabelFormCpu { get; private set; }
         public Chart ChartFormCpu { get; private set; }
+        public string ServiceName { get; private set; }
+        public DateTime LastAccessTime { get; private set; }
+
+
 
         public FormCpu(string serviceName)
         {
@@ -20,6 +24,18 @@ namespace SystemMonitor
 
             Text = $"CPU Usage - {serviceName}";
             InitializeChart();
+            UpdateLastAccessTime();
+        }
+
+        public void UpdateLastAccessTime()
+        {
+            LastAccessTime = DateTime.Now;
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            UpdateLastAccessTime();
         }
 
         private void InitializeChart()
