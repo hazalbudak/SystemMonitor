@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-
 namespace SystemMonitor
 {
     public partial class FormCpu : Form
@@ -10,34 +9,15 @@ namespace SystemMonitor
         public ProgressBar ProgressBarFormCpu { get; private set; }
         public Label LabelFormCpu { get; private set; }
         public Chart ChartFormCpu { get; private set; }
-        public string ServiceName { get; private set; }
-        public DateTime LastAccessTime { get; private set; }
-
-
-
         public FormCpu(string serviceName)
         {
             InitializeComponent();
             ProgressBarFormCpu = progressBarFormCpu;
             LabelFormCpu = labelFormCpu;
             ChartFormCpu = chartFormCpu;
-
             Text = $"CPU Usage - {serviceName}";
             InitializeChart();
-            UpdateLastAccessTime();
         }
-
-        public void UpdateLastAccessTime()
-        {
-            LastAccessTime = DateTime.Now;
-        }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-            UpdateLastAccessTime();
-        }
-
         private void InitializeChart()
         {
             ChartFormCpu.Series.Clear();
@@ -49,16 +29,12 @@ namespace SystemMonitor
             // X ekseni için zaman yerine aralık belirlenir (örneğin 0'dan başlayıp 60'a kadar gidiyor)
             ChartFormCpu.ChartAreas[0].AxisX.Minimum = 0;
             ChartFormCpu.ChartAreas[0].AxisX.Maximum = 50; // Bu değeri istediğin genişliğe göre değiştirebilirsin
-
             // X ekseninin aralığını ayarlıyoruz (örneğin her birim 5 adımda)
             ChartFormCpu.ChartAreas[0].AxisX.Interval = 10;
-
             // X eksenindeki label formatını kaldırıyoruz
             ChartFormCpu.ChartAreas[0].AxisX.LabelStyle.Format = "";
-
             ChartFormCpu.Series["CPU"].Color = Color.Red;
         }
-
         public void UpdateCpuUsage(float cpuUsage)
         {
             if (InvokeRequired)
@@ -66,10 +42,8 @@ namespace SystemMonitor
                 Invoke(new Action<float>(UpdateCpuUsage), cpuUsage);
                 return;
             }
-
             ProgressBarFormCpu.Value = (int)Math.Min(cpuUsage, 100);
-            LabelFormCpu.Text = $"{cpuUsage:F2}%";
-
+            LabelFormCpu.Text = $"%{cpuUsage:F2}";
             ChartFormCpu.Series["CPU"].Points.AddXY(DateTime.Now, cpuUsage);
             if (ChartFormCpu.Series["CPU"].Points.Count > 60)
             {
@@ -77,7 +51,6 @@ namespace SystemMonitor
             }
             ChartFormCpu.ResetAutoValues();
         }
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -89,17 +62,3 @@ namespace SystemMonitor
         }
     }
 }
-
-    //public partial class FormCpu : Form
-    //{
-    //    public FormCpu()
-    //    {
-    //        InitializeComponent();
-    //    }
-
-    //    private void FormCpu_Load(object sender, EventArgs e)
-    //    {
-
-    //    }
-    //}
-//}

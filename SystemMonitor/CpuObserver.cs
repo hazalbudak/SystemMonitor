@@ -5,7 +5,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Management;
 using System.ServiceProcess;
 using System.Linq;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 
 namespace SystemMonitor
 {
@@ -88,34 +88,21 @@ namespace SystemMonitor
             if (_openForms.ContainsKey(serviceName))
             {
                 _openForms[serviceName].BringToFront();
-                _openForms[serviceName].UpdateLastAccessTime();
                 return;
             }
 
             if (_openForms.Count >= MAX_OPEN_FORMS)
             {
-                var oldestForm = _openForms.Values.OrderBy(f => f.LastAccessTime).First();
-                string oldestServiceName = oldestForm.ServiceName;
-                oldestForm.Close();
-                _openForms.Remove(oldestForm.ServiceName);
+                MessageBox.Show($"Maksimum Sekme Sayısına Ulaşıldı ({MAX_OPEN_FORMS}). ", "Form Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
             FormCpu newForm = new FormCpu(serviceName);
-            newForm.FormClosed += (s, args) =>
-            {
-                _openForms.Remove(serviceName);
-            };
-
+            newForm.FormClosed += (s, args) => _openForms.Remove(serviceName);
             _openForms.Add(serviceName, newForm);
             newForm.Show();
-            newForm.UpdateLastAccessTime();
-
         }
 
-        private void UpdateDataGridViewEnabled()
-        {
-            _dataGridViewServices.Enabled = _openForms.Count < MAX_OPEN_FORMS;
-        }
 
         private void UpdateCpuUsage(object sender, EventArgs e)
         {
@@ -170,7 +157,7 @@ namespace SystemMonitor
         private void UpdateMainUI(float cpuUsage)
         {
             _progressBar.Value = (int)Math.Min(cpuUsage, 100);
-            _labelCpu.Text = $"{cpuUsage:F2}%";
+            _labelCpu.Text = $"%{cpuUsage:F2}";
 
             _chartCpu.Series["CPU"].Points.AddY(cpuUsage);
             if (_chartCpu.Series["CPU"].Points.Count > 60)
