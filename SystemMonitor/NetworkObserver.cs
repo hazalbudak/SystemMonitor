@@ -6,6 +6,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SystemMonitor
 {
+    //Ağ kullanımını izlemek için tasarlanmış bir Observer sınıfıdır.
     public class NetworkObserver : IObserver
     {
         private ProgressBar _progressBar;
@@ -15,6 +16,7 @@ namespace SystemMonitor
         private List<PerformanceCounter> _networkCountersSent;
         private List<PerformanceCounter> _networkCountersReceived;
 
+        //ProgressBar, Label ve Chart kontrollerini alır ve ağ kullanımını izlemeye başlar.
         public NetworkObserver(ProgressBar progressBar, Label labelNetwork, Chart chartNetwork)
         {
             _progressBar = progressBar;
@@ -29,6 +31,7 @@ namespace SystemMonitor
             _updateNetworkTimer.Start();
         }
 
+        // Bu metot ağ arayüzlerini başlatır ve her arayüz için PerformanceCounter sayaçlarını oluşturur.
         private void InitializeNetworkCounter()
         {
             _networkCountersSent = new List<PerformanceCounter>();
@@ -48,6 +51,7 @@ namespace SystemMonitor
             }
         }
 
+        // Bu metot Timer her çalıştığında çağrılır ve ağ kullanımını günceller.
         private void UpdateNetworkUsage(object sender, EventArgs e)
         {
             float totalSentBytes = 0;
@@ -65,14 +69,15 @@ namespace SystemMonitor
 
             float totalNetworkUsage = (totalSentBytes + totalReceivedBytes) / (1024 * 1024); // MB/s cinsinden
 
-            // Observer aracılığıyla güncelleme işlemini gerçekleştir
+            // Observer güncelleme işlemini gerçekleştirir. Diğer kullanımlar 0 olarak geçilir.
             Update(0, 0, totalNetworkUsage, 0); // Diğer kullanımlar 0 olarak geçildi, çünkü sadece Network'ü güncelliyoruz
         }
 
+        // Bu metot, ProgressBar, Label ve Chart kontrolünü günceller.
         public void Update(float cpuUsage, float ramUsage, float networkUsage, float diskUsage)
         {
             // ProgressBar'ı ve Label'ı güncelle
-            _progressBar.Value = (int)Math.Min(networkUsage, 100); // %100 ile sınırlıyoruz
+            _progressBar.Value = (int)Math.Min(networkUsage, 100); // Math.Min ile %100'de sınırlıyoruz
             _labelNetwork.Text = $"% {networkUsage:F0}";
             _chartNetwork.Series["Ağ"].Points.AddY(networkUsage);
         }
