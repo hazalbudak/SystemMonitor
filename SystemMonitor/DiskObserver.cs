@@ -6,6 +6,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SystemMonitor
 {
+    //Disk kullanımını izlemek için tasarlanmış bir Observer sınıfıdır.
     public class DiskObserver : IObserver
     {
         private ProgressBar _progressBar;
@@ -14,6 +15,7 @@ namespace SystemMonitor
         private Timer _updateDiskTimer;
         private List<PerformanceCounter> _diskCounters;
 
+        //ProgressBar, Label ve Chart kontrollerini alır ve disk kullanımını izlemeye başlar.
         public DiskObserver(ProgressBar progressBar, Label labelDisk, Chart chartDisk)
         {
             _progressBar = progressBar;
@@ -28,11 +30,12 @@ namespace SystemMonitor
             _updateDiskTimer.Start();
         }
 
+        //Fiziksel diskler için PerformanceCounter sayaçlarını başlatır.
         private void InitializeDiskCounter()
         {
             _diskCounters = new List<PerformanceCounter>();
 
-            // Bilgisayardaki tüm fiziksel diskleri al
+            // "PhysicalDisk" kategorisindeki tüm fiziksel diskleri alır.
             var category = new PerformanceCounterCategory("PhysicalDisk");
             string[] instanceNames = category.GetInstanceNames();
 
@@ -47,6 +50,7 @@ namespace SystemMonitor
             }
         }
 
+        // Bu metot Timer her çalıştığında çağrılır ve disk kullanımını günceller.
         private void UpdateDiskUsage(object sender, EventArgs e)
         {
             float totalDiskUsage = 0;
@@ -56,7 +60,7 @@ namespace SystemMonitor
                 totalDiskUsage += diskCounter.NextValue();
             }
 
-            // Disk kullanımı yüzdesini hesapla ve arayüzde göster
+            // Ortalama disk kullanımını hesaplar.
             float averageDiskUsage = totalDiskUsage / _diskCounters.Count;
 
             if (averageDiskUsage < 0) averageDiskUsage = 0;
@@ -68,7 +72,7 @@ namespace SystemMonitor
 
         public void Update(float cpuUsage, float ramUsage, float networkUsage, float diskUsage)
         {
-            // ProgressBar'ı ve Label'ı güncelle
+            // ProgressBar'ı ve Label'ı disk kullanım yüzdesiyle güncelle
             _progressBar.Value = (int)diskUsage;
             _labelDisk.Text = $"% {diskUsage:F1}";
             _chartDisk.Series["Disk"].Points.AddY(diskUsage);
