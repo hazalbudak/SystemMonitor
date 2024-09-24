@@ -2,13 +2,17 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+
 namespace SystemMonitor
 {
     public partial class FormCpu : Form
     {
+        // CPU kullanımını göstermek için ProgressBar, Label ve Chart nesneleri tanımlanıyor
         public ProgressBar ProgressBarFormCpu { get; private set; }
         public Label LabelFormCpu { get; private set; }
         public Chart ChartFormCpu { get; private set; }
+
+        // Constructor: FormCpu sınıfı oluşturulurken, servis adını alarak başlık belirlenir ve Chart nesnesi başlatılır
         public FormCpu(string serviceName)
         {
             InitializeComponent();
@@ -18,6 +22,8 @@ namespace SystemMonitor
             Text = $"CPU Usage - {serviceName}";
             InitializeChart();
         }
+
+        // CPU kullanımını gösterecek Chart (grafik) kontrolünü yapılandırır
         private void InitializeChart()
         {
             ChartFormCpu.Series.Clear();
@@ -25,16 +31,16 @@ namespace SystemMonitor
             ChartFormCpu.Series["CPU"].ChartType = SeriesChartType.Line;
             ChartFormCpu.ChartAreas[0].AxisY.Maximum = 100;
             ChartFormCpu.ChartAreas[0].AxisY.Minimum = 0;
-            //ChartFormCpu.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
-            // X ekseni için zaman yerine aralık belirlenir (örneğin 0'dan başlayıp 60'a kadar gidiyor)
             ChartFormCpu.ChartAreas[0].AxisX.Minimum = 0;
-            ChartFormCpu.ChartAreas[0].AxisX.Maximum = 50; // Bu değeri istediğin genişliğe göre değiştirebilirsin
+            ChartFormCpu.ChartAreas[0].AxisX.Maximum = 50; // Bu değeri istediğin genişliğe göre değiştirebiliriz
             // X ekseninin aralığını ayarlıyoruz (örneğin her birim 5 adımda)
             ChartFormCpu.ChartAreas[0].AxisX.Interval = 10;
             // X eksenindeki label formatını kaldırıyoruz
             ChartFormCpu.ChartAreas[0].AxisX.LabelStyle.Format = "";
             ChartFormCpu.Series["CPU"].Color = Color.Red;
         }
+
+        // CPU kullanımını günceller ve bu değerleri ProgressBar, Label ve Chart üzerinde gösterir
         public void UpdateCpuUsage(float cpuUsage)
         {
             if (InvokeRequired)

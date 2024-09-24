@@ -12,5 +12,4 @@ namespace SystemMonitor
         void Detach(IObserver observer);
         void Notify();
     }
-
 }

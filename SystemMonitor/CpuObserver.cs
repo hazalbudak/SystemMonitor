@@ -11,6 +11,7 @@ namespace SystemMonitor
 {
     public class CpuObserver : IObserver, IDisposable
     {
+        // UI bileşenleri için değişkenler
         private ProgressBar _progressBar;
         private DataGridView _dataGridViewServices;
         private Label _labelCpu;
@@ -24,6 +25,7 @@ namespace SystemMonitor
         private const int MAX_OPEN_FORMS = 4;
         private Dictionary<string, FormCpu> _openForms = new Dictionary<string, FormCpu>();
 
+        // Yapıcı metot
         public CpuObserver(ProgressBar progressBar, DataGridView dataGridViewServices, Label labelCpu, Chart chartCpu)
         {
             _progressBar = progressBar;
@@ -42,12 +44,10 @@ namespace SystemMonitor
             _updateCpuTimer.Start();
 
             _dataGridViewServices.CellClick += OnServiceClicked;
-
-            // Initialize FormCpu but don't show it yet 
-            //_formCpu = new FormCpu();
         }
 
-        private void InitializeDataGridView()
+        // DataGridView'in sütunlarını başlat
+        private void InitializeDataGridView() 
         {
             _dataGridViewServices.Columns.Add("ServiceName", "Service Name");
             _dataGridViewServices.Columns.Add("Status", "Status");
@@ -56,7 +56,8 @@ namespace SystemMonitor
             _dataGridViewServices.MultiSelect = false;
         }
 
-        private void PopulateServices()
+        // Çalışan servisleri DataGridView'e ekle
+        private void PopulateServices() // Çalışan servisleri DataGridView'e ekle
         {
             _services = ServiceController.GetServices().Where(s => s.Status == ServiceControllerStatus.Running).ToArray();
 
@@ -72,7 +73,8 @@ namespace SystemMonitor
             }
         }
 
-        private void OnServiceClicked(object sender, DataGridViewCellEventArgs e)
+        // DataGridView'de bir servis satırına tıklandığında olay
+        private void OnServiceClicked(object sender, DataGridViewCellEventArgs e) 
         {
             if (e.RowIndex >= 0)
             {
@@ -83,6 +85,8 @@ namespace SystemMonitor
                 }
             }
         }
+
+        // Seçilen servis için yeni bir FormCpu aç
         private void OpenServiceForm(string serviceName)
         {
             if (_openForms.ContainsKey(serviceName))
@@ -103,7 +107,7 @@ namespace SystemMonitor
             newForm.Show();
         }
 
-
+        // CPU kullanımını güncelle
         private void UpdateCpuUsage(object sender, EventArgs e)
         {
             UpdateTotalCpuUsage();
@@ -113,7 +117,7 @@ namespace SystemMonitor
             }
         }
 
-
+        // Toplam CPU kullanımını güncelle
         private void UpdateTotalCpuUsage()
         {
             try
@@ -127,7 +131,7 @@ namespace SystemMonitor
             }
         }
 
-
+        // Servislerin CPU kullanımını güncelle
         private void UpdateServiceCpuUsage(string serviceName, FormCpu form)
         {
             var service = _services.FirstOrDefault(s => s.ServiceName == serviceName);
@@ -153,7 +157,7 @@ namespace SystemMonitor
             }
         }
 
-
+        // Ana UI'yi güncelle
         private void UpdateMainUI(float cpuUsage)
         {
             _progressBar.Value = (int)Math.Min(cpuUsage, 100);
@@ -167,7 +171,7 @@ namespace SystemMonitor
             _chartCpu.ResetAutoValues();
         }
 
-
+        // Servisin işlem ID'sini al
         private int GetServiceProcessId(string serviceName)
         {
             var query = $"SELECT ProcessId FROM Win32_Service WHERE Name = '{serviceName}'";
@@ -181,7 +185,7 @@ namespace SystemMonitor
             return -1;
         }
 
-
+        // Belirtilen işlem için CPU kullanımını al
         private float GetCpuUsageForProcess(int processId)
         {
             try
@@ -210,6 +214,7 @@ namespace SystemMonitor
             }
         }
 
+        
         public void Update(float cpuUsage, float ramUsage, float networkUsage, float diskUsage)
         {
             // This method is not used in this implementation

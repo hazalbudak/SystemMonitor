@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 using Microsoft.VisualBasic.Devices;
 
-
-
 namespace SystemMonitor
 {
     public class RamObserver : IObserver
@@ -19,6 +17,7 @@ namespace SystemMonitor
 
         public RamObserver(ProgressBar progressBar, Label labelRam, Chart chartRam)
         {
+            // RAM kullanımı için ProgressBar, Label ve Chart kontrolleri
             _progressBar = progressBar;
             _labelRam = labelRam;
             _chartRam = chartRam;
@@ -30,12 +29,14 @@ namespace SystemMonitor
             _updateRamTimer.Start();
         }
 
+        // PerformanceCounter ve toplam RAM miktarını ayarlayan fonksiyon
         private void InitializeRamCounter()
         {
             _ramCounter = new PerformanceCounter("Memory", "Available MBytes");
             _totalMemory = new ComputerInfo().TotalPhysicalMemory / (1024 * 1024); // MB cinsinden
         }
 
+        // RAM kullanımını güncelleyen fonksiyon
         private void UpdateRamUsage(object sender, EventArgs e)
         {
             // Kullanılabilir RAM miktarını al
@@ -55,6 +56,7 @@ namespace SystemMonitor
             Update(0, ramUsage, 0, 0); // CPU, Network, Disk kullanımları 0 olarak geçildi, çünkü sadece RAM'i güncelliyoruz
         }
 
+        // Observer arayüzündeki Update fonksiyonu RAM kullanımıyla UI'ı günceller
         public void Update(float cpuUsage, float ramUsage, float networkUsage, float diskUsage)
         {
             // ProgressBar'ı ve Label'ı güncelle
